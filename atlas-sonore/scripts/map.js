@@ -830,7 +830,7 @@ $(window).on('load', function() {
   }
 
   function addParticipationDiv() {
-    var text = '<h3>Cliquez <a href="https://frenchdrawl.linguistics.ubc.ca/welcome/fr">ici</a> pour participer à cette étude.</h3>'
+    var text = '<h3>Cliquez <a href="https://atlas-sonore.fhis.ubc.ca/participez">ici</a> pour participer à cette étude.</h3>'
     var closeButton = '<button class="close-button" onClick="this.parentElement.style.display=\'none\'">&times;</button>'
     $('div.leaflet-right.leaflet-bottom').prepend('<div class="leaflet-control leaflet-banner">' + text + closeButton + '</div>')
   }
