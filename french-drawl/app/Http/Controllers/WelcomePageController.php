@@ -7,6 +7,11 @@ class WelcomePageController extends Controller
     /**
      * Show the welcome page
      */
+    public function home()
+    {
+        return $this->show('fr');
+    }
+    
     public function show($locale)
     {
         \App::setLocale($locale);

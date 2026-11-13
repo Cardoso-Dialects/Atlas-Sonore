@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/','StartPageController@index')->name('startpage.index');
+Route::get('/','WelcomePageController@home')->name('startpage.index');   // /participez shows the French welcome page
 Route::get('/welcome/{locale}','WelcomePageController@show')->name('welcome.show');
 Route::get('/consent_forms/create','ConsentFormController@create')->name('consent_forms.create');
 Route::post('/consent_forms','ConsentFormController@store')->name('consent_forms.store');
