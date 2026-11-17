@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Écoutez les différents accents francophones au Canada - Listen to the different french accents in Canada">
+  <link rel="icon" type="image/jpeg" href="./favicon.jpg">
+
+  <title>Loading the map...</title>
+
+  <!-- jQuery-->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+
+  <!-- Leaflet (CSS and JS) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+
+  <!-- PapaParse -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/js/fontawesome.min.js"></script>
+
+  <!-- leaflet-providers-->
+  <script src="https://unpkg.com/leaflet-providers@1.10.2/leaflet-providers.js"></script>
+
+  <!-- Leaflet.awesome-markers v2.0.4, manually updated to svg to allow hex and material icons -->
+  <link rel="stylesheet" type="text/css" href="scripts/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css">
+  <script type="text/javascript" src="scripts/Leaflet.awesome-markers/dist/leaflet.awesome-markers.js"></script>
+
+  <!-- Leaflet Markercluster -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css">
+  <script type="text/javascript" src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+
+  <!-- Leaflet Markercluster layer support -->
+  <script src="https://unpkg.com/leaflet.markercluster.layersupport@2.0.1/dist/leaflet.markercluster.layersupport.js"></script>
+
+  <!-- Leaflet control geocoder -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder@1.13.0/dist/Control.Geocoder.css" />
+  <script src="https://unpkg.com/leaflet-control-geocoder@1.13.0/dist/Control.Geocoder.js"></script>
+
+  <!-- Locate Control -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-locatecontrol/0.72.0/L.Control.Locate.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-locatecontrol/0.72.0/L.Control.Locate.min.js"></script>
+
+  <!-- jQuery-CSV -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.11/jquery.csv.min.js"></script>
+
+  <!-- Custom style sheet -->
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+  <!-- DataTables -->
+  <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" />
+
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<!--  Sidebar-->
+  <link rel="stylesheet" href="./css/leaflet-sidebar.css" />
+
+<!--  Popup-->
+  <link rel="stylesheet" href="./css/other.css" />
+
+</head>
+
+<body>
+
+  <div class="loader">Loading...</div>
+  <div id="sidebar" class="leaflet-sidebar collapsed">
+    <!-- Nav tabs -->
+    <div class="leaflet-sidebar-tabs">
+      <ul role="tablist">
+        <li>
+          <a href="#info" role="tab"><i class="fas fa-info"></i></a>
+        </li>
+        <li>
+          <a href="#activities" role="tab"><i class="fa fa-book"></i></a>
+        </li>
+        <li>
+          <a href="#participate" role="tab"><i class="fas fa-users"></i></a>
+        </li>
+      </ul>
+
+<!--      <ul role="tablist">-->
+<!--        <li>-->
+<!--          <a href="#settings" role="tab"><i class="fa fa-gear"></i></a>-->
+<!--        </li>-->
+<!--      </ul>-->
+    </div>
+
+    <!-- Tab panes -->
+    <div class="leaflet-sidebar-content">
+      <div class="leaflet-sidebar-pane" id="info">
+        <h1 class="leaflet-sidebar-header">
+          À PROPOS DE CET ATLAS
+          <span class="leaflet-sidebar-close"
+          ><i class="fa fa-caret-left"></i
+          ></span>
+        </h1>
+        <p>Ce projet vise à valoriser les différents accents de la francophonie canadienne et à les situer géographiquement. Vous pouvez voyager avec votre curseur d’un coin à l’autre du pays en écoutant les différents accents.</p>
+
+        <p>Un de nos objectifs est aussi d’offrir un outil pédagogique pour les enseignant·e·s et les élèves intéressé·e·s par le français, la diversité et la variation linguistique.</p>
+
+        <p>Ce projet est une co-création de Dre Marie-Eve Bouchard et Dre Amanda Cardoso de l’Université de la Colombie-Britannique. L’étude est subventionnée par Patrimoine Canada, le Conseil de recherche en sciences humaines du Canada, la Faculté des Arts de UBC et l’institut Language Sciences de UBC.</p>
+
+        <p><b>Contact: Marie-Eve Bouchard (chercheuse principale): me.bouchard@ubc.ca</b></p>
+
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
+
+
+
+      </div>
+
+      <div class="leaflet-sidebar-pane" id="activities">
+        <h1 class="leaflet-sidebar-header">
+          ACTIVITÉS PÉDAGOGIQUES<span class="leaflet-sidebar-close"
+        ><i class="fa fa-caret-left"></i
+        ></span>
+        </h1>
+
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>Cet outil de g&eacute;ographie linguistique vise &agrave; documenter la variation du fran&ccedil;ais au Canada. Il vise aussi &agrave; sensibiliser les francophones et les apprenant&middot;e&middot;s du fran&ccedil;ais &agrave; la diversit&eacute; linguistique et &agrave; valoriser les diff&eacute;rents accents francophones du Canada. Voici quelques id&eacute;es pour utiliser ce site web avec vos &eacute;tudiants ou vos amis.&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+        <div id="toc_container">
+          <p class="toc_title">Contenu</p>
+          <ul class="toc_list">
+            <li><a href="#one">1 Pour les petits (&eacute;cole primaire)</a>
+            </li>
+            <li><a href="#two">2 Pour les plus grands (&eacute;cole secondaire)</a></li>
+            <li><a href="#three">3 Pour les plus curieux (niveau Coll&eacute;gial et universitaire)</a></li>
+            <li><a href="#four">4 Pour les apprenants du fran&ccedil;ais</a></li>
+            <li><a href="#five">5 Pour tout le monde</a></li>
+
+
+          </ul>
+        </div>
+        <p id="one" style='margin:0cm;font-size:16px;font-family:"Helvetica",sans-serif;text-align: center;'><u><span style='font-family:"Helvetica Neue",sans-serif;'>POUR LES PETITS (&Eacute;COLE PRIMAIRE)</span></u></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Activit&eacute; 1. Les langues qui m&rsquo;entourent.</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Objectif. Prendre conscience des langues parl&eacute;es autour de soi.</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Niveau scolaire sugg&eacute;r&eacute; : Maternelle - 7<sup>e</sup> ann&eacute;e</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>Les enfants peuvent d&rsquo;abord &eacute;couter quelques audios de l&rsquo;atlas sonore. Ensuite, nous les invitons &agrave; partager avec les autres &eacute;l&egrave;ves leur propre r&eacute;alit&eacute; linguistique en parlant de la langue (ou des langues) utilis&eacute;e(s) par et avec les membres de leur famille, leurs ami&middot;e&middot;s et leurs voisin&middot;e&middot;s. Est-ce que tout le monde parle la m&ecirc;me langue que moi? Est-ce que j&rsquo;entends des langues diff&eacute;rentes de la mienne quand je suis &agrave; l&rsquo;ext&eacute;rieur de la maison et de l&rsquo;&eacute;cole? Et o&ugrave; est-ce que j&rsquo;entends ces langues diff&eacute;rentes? (&Agrave; l&rsquo;&eacute;picerie? Dans l&rsquo;autobus? &Agrave; la biblioth&egrave;que?) Qu&rsquo;est-ce que j&rsquo;appr&eacute;cie des autres langues que j&rsquo;entends?</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Activit&eacute; 2. Je fais partie de la francophonie.</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Objectif. Comprendre ce qu&rsquo;est la francophonie.</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Niveau scolaire sugg&eacute;r&eacute; : 3<sup>e&nbsp;</sup>- 7<sup>e</sup> ann&eacute;e</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>La francophonie regroupe toutes les locutrices et tous les locuteurs du fran&ccedil;ais &agrave; travers le monde. La francophonie ne signifie donc pas un endroit pr&eacute;cis, mais plut&ocirc;t une communaut&eacute; globale qui inclut l&rsquo;ensemble des locutrices et des locuteurs du fran&ccedil;ais. Au Canada, on retrouve des francophones un peu partout! Toutes et tous ont un point en commun : la langue fran&ccedil;aise. Mais ceci ne veut pas dire qu&rsquo;ils parlent le fran&ccedil;ais de la m&ecirc;me fa&ccedil;on. Et c&rsquo;est tr&egrave;s bien ainsi! Ces diff&eacute;rents accents font partie de la richesse de la francophonie. Nous invitons les enfants &agrave; cliquer sur diff&eacute;rents accents jusqu&rsquo;&agrave; ce qu&rsquo;ils trouvent des enregistrements avec des locutrices ou locuteurs qui parlent &laquo;comme eux·elles&raquo;. Est-ce que ces locutrices et ces locuteurs sont situ&eacute;&middot;e&middot;s g&eacute;ographiquement pr&egrave;s l&rsquo;un de l&rsquo;autre? Est-ce qu&rsquo;elles et ils sont situ&eacute;&middot;e&middot;s pr&egrave;s d&rsquo;o&ugrave; habitent les enfants?&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Activit&eacute; 3. Comment est-ce que la langue varie?</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Objectif. Reconna&icirc;tre des facteurs qui influencent la perception de la variation linguistique.</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Niveau scolaire sugg&eacute;r&eacute; : 5<sup>e&nbsp;</sup>- 7<sup>e</sup> ann&eacute;e</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>Vous avez s&ucirc;rement remarqu&eacute; que les locutrices et locuteurs francophones sur la carte du Canada ont diff&eacute;rents accents. L&rsquo;accent d&rsquo;une personne d&eacute;pend de plusieurs facteurs tels que son &acirc;ge, l&rsquo;endroit o&ugrave; il ou elle a grandi, son identit&eacute; de genre, etc. Par exemple, est-ce que votre grand-m&egrave;re parle diff&eacute;remment de vous? Est-ce qu&rsquo;une personne de Montr&eacute;al parle diff&eacute;remment d&rsquo;une personne de Edmonton ou Fredericton? Nous vous invitons &agrave; discuter de ces diff&eacute;rences avec vos camarades de classe. Nous vous invitons aussi &agrave; remarquer si vous avez des pens&eacute;es ou des sentiments par rapport &agrave; certains accents? Sont-ils positifs ou n&eacute;gatifs? Il est important de reconna&icirc;tre ces sentiments et d&rsquo;en discuter afin de comprendre l&rsquo;origine de ces sentiments (et d&eacute;construire le lien entre le sentiment et l&rsquo;accent, si n&eacute;cessaire!). Les perceptions et les sentiments n&eacute;gatifs que nous avons peuvent nuire &agrave; notre compr&eacute;hension et &agrave; notre capacit&eacute; de communiquer de fa&ccedil;on respectueuse. &nbsp;Malgr&eacute; les diff&eacute;rences, toute personne est capable de communiquer efficacement &agrave; sa mani&egrave;re, ce qui lui accorde une valeur fondamentale.&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'><span style="text-decoration:none;">&nbsp;</span></span></p>
+
+        <p id="two" style='margin:0cm;font-size:16px;font-family:"Helvetica",sans-serif;text-align: center;'><u><span style='font-family:"Helvetica Neue",sans-serif;'>POUR LES PLUS GRANDS (&Eacute;COLE SECONDAIRE)</span></u></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Activit&eacute; 1. Qu&rsquo;est-ce que la discrimination linguistique?</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Objectif. Reconna&icirc;tre la discrimination linguistique.</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>La discrimination se produit lorsqu&apos;une personne (ou un groupe de personnes) est trait&eacute;e de fa&ccedil;on injuste ou se voit refuser les m&ecirc;mes opportunit&eacute;s, exp&eacute;riences et privil&egrave;ges que les autres. La diff&eacute;rence de traitement est g&eacute;n&eacute;ralement due aux caract&eacute;ristiques personnelles, comme la religion, la culture ou la race. La soci&eacute;t&eacute; canadienne a mis en place plusieurs m&eacute;canismes pour combattre ces formes de discrimination. Toutefois, une forme de discrimination (peut-&ecirc;tre plus subtile) dont nous entendons moins souvent parler est la discrimination linguistique. Certaines personnes sont discrimin&eacute;es parce qu&rsquo;elles parlent de fa&ccedil;on &laquo;&nbsp;diff&eacute;rente&nbsp;&raquo;. Est-ce que vous pouvez trouver des exemples de discrimination linguistique? Quels sont les impacts de la discrimination linguistique chez les locuteurs?</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Activit&eacute; 2. Mettre fin &agrave; la discrimination linguistique.</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Objectif. D&eacute;construire les st&eacute;r&eacute;otypes.</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>Toute discrimination est le produit de pr&eacute;jug&eacute;s et de st&eacute;r&eacute;otypes. Les pr&eacute;jug&eacute;s et les st&eacute;r&eacute;otypes sont appris dans notre environnement social, c&rsquo;est-&agrave;-dire par tout ce qui nous entourent (les gens, les m&eacute;dias, les r&eacute;seaux sociaux, etc.). Pour s&rsquo;en d&eacute;faire, il faut d&rsquo;abord en prendre conscience. Ensuite, il faut d&eacute;construire et d&eacute;sactiver le lien entre les st&eacute;r&eacute;otypes et les comportements, puis d&eacute;velopper de bonnes pratiques qui permettent de pr&eacute;venir les discriminations. Dans cette activit&eacute;, nous vous invitons &agrave; 1) r&eacute;fl&eacute;chir aux pr&eacute;jug&eacute;s et st&eacute;r&eacute;otypes que vous avez en lien avec les diff&eacute;rents accents francophones, 2) &eacute;mettre des hypoth&egrave;ses quant &agrave; l&rsquo;origine de ces pr&eacute;jug&eacute;s et st&eacute;r&eacute;otypes, 3) penser &agrave; des strat&eacute;gies pour mettre un terme &agrave; ces pr&eacute;jug&eacute;s et st&eacute;r&eacute;otypes, et 4) faire une liste des pens&eacute;es et des comportements qui permettent de cr&eacute;er des associations positives envers les diff&eacute;rents accents.</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Activit&eacute; 3. D&eacute;crire les diff&eacute;rents accents.</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Objectif. Acqu&eacute;rir le vocabulaire n&eacute;cessaire pour d&eacute;crire les diff&eacute;rentes vari&eacute;t&eacute;s de fran&ccedil;ais.</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>La mani&egrave;re dont nous d&eacute;crivons la fa&ccedil;on de parler d&rsquo;une personne peut avoir un grand impact sur la s&eacute;curit&eacute; linguistique de cette personne. La s&eacute;curit&eacute; linguistique est une impression ou un sentiment que la fa&ccedil;on dont je parle est valoris&eacute;e par la soci&eacute;t&eacute;; et au contraire, l&rsquo;ins&eacute;curit&eacute; linguistique est une impression ou un sentiment que la fa&ccedil;on dont je parle puisse &ecirc;tre risible, consid&eacute;r&eacute;e comme &eacute;tant &laquo;incorrecte&raquo;, ou n&rsquo;est pas reconnue comme &eacute;tant l&eacute;gitime. Sachant ceci, il est important de savoir d&eacute;crire les diff&eacute;rents accents sans tomber dans les pr&eacute;jug&eacute;s. Nous invitons chaque &eacute;l&egrave;ve &agrave; choisir un enregistrement audio et &agrave; le d&eacute;crire tel que le ferait un linguiste, c&rsquo;est-&agrave;-dire sans jugement de valeur. &Agrave; la fin, les &eacute;l&egrave;ves peuvent comparer leurs descriptions avec celles des autres &eacute;l&egrave;ves et voir comment chacun&middot;e a d&eacute;cid&eacute; de parler des diff&eacute;rences. Y a-t-il des similarit&eacute;s et des diff&eacute;rences? En quoi ces descriptions ressemblent-elles &agrave; celles que des linguistes feraient?&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+
+        <p id="three" style='margin:0cm;font-size:16px;font-family:"Helvetica",sans-serif;text-align: center;'><u><span style='font-family:"Helvetica Neue",sans-serif;'>POUR LES PLUS CURIEUX (NIVEAU COLL&Eacute;GIAL ET UNIVERSITAIRE)</span></u></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Activit&eacute; 1. Les attitudes linguistiques.&nbsp;</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Objectif. Prendre conscience que les attitudes linguistiques que nous avons par rapport &agrave; un accent, une vari&eacute;t&eacute; ou une langue sont en grande partie acquises dans notre entourage. &nbsp;</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>Les attitudes linguistiques sont les croyances et les &eacute;motions que nous avons par rapport &agrave; un accent, une vari&eacute;t&eacute; ou une langue et &agrave; ses locuteurs. &Eacute;coutez diff&eacute;rents enregistrements audios et prenez le temps de percevoir ce que les diff&eacute;rents accents font &eacute;merger en vous.&nbsp;</span><span style='font-family:"Helvetica Neue",sans-serif;'>D&rsquo;o&ugrave; viennent ces attitudes et ces croyances? Comment sont-elles construites? Comment les avez-vous acquises?&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Activit&eacute; 2. Les traits linguistiques des diff&eacute;rentes vari&eacute;t&eacute;s de fran&ccedil;ais au Canada.&nbsp;</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Objectif. Relever diff&eacute;rentes caract&eacute;ristiques linguistiques des vari&eacute;t&eacute;s de fran&ccedil;ais au Canada.&nbsp;</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>Les accents de cette carte diff&egrave;rent au niveau syntaxique, phon&eacute;tique et prosodique (entre autres). La syntaxe est l&rsquo;ensemble des r&egrave;gles associ&eacute;es &agrave; la construction d&rsquo;une phrase (par exemple, je dis &laquo;Je mange une pomme&raquo; et non pas &laquo;Pomme mange je une&raquo;). La phon&eacute;tique est l&rsquo;ensemble des sons d&rsquo;une langue (on distingue 36 sons en fran&ccedil;ais!) et la prosodie est l&rsquo;ensemble des traits oraux qui forment la musicalit&eacute; de notre voix (incluant l&rsquo;intonation, le stress et le rythme). Nous vous invitons &agrave; relever ces diff&eacute;rences entre les accents des diff&eacute;rentes provinces et r&eacute;gions canadiennes et &agrave; les d&eacute;crire.</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Activit&eacute; 3. La standardisation.</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Objectif. Comprendre la stigmatisation des vari&eacute;t&eacute;s non-standards.&nbsp;</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>Le standard est une vari&eacute;t&eacute; de langue qui est codifi&eacute;e, l&eacute;galis&eacute;e et reconnue comme &eacute;tant &ldquo;la norme&rdquo;. Mais en soit, cette vari&eacute;t&eacute; de langue n&rsquo;a rien de sp&eacute;ciale. D&rsquo;un point de vue linguistique, tous les accents se valent. Mais d&rsquo;un point de vue social, il existe une id&eacute;e fausse que certains accents sont per&ccedil;us comme &eacute;tant plus &laquo;beaux&raquo;, plus &laquo;purs&raquo; ou plus &laquo;vrais&raquo; que d&rsquo;autres. R&eacute;pondez aux questions suivantes : Quels sont les processus qui permettent d&rsquo;arriver &agrave; la cr&eacute;ation d&rsquo;une vari&eacute;t&eacute; standard? Par le fait m&ecirc;me, par quels processus est-ce que d&rsquo;autres vari&eacute;t&eacute;s en arrivent &agrave; &ecirc;tre per&ccedil;ues comme &eacute;tant non-standards? Comment est-ce qu&rsquo;on perp&eacute;tue la distinction entre les deux?</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Activit&eacute; 4. La variation lexicale.</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Objectif. Trouver des mots ou des expressions idiomatiques propres &agrave; un accent r&eacute;gional.</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>Comme la langue &eacute;volue et s&rsquo;adapte aux besoins de ses locuteurs, les francophones de chaque coin du Canada ont d&eacute;velopp&eacute; certains mots ou certaines expressions qui leur sont propres. Est-ce que vous pouvez trouver certains mots ou expressions typiques parmi les enregistrements audios?&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+
+        <p id="four" style='margin:0cm;font-size:16px;font-family:"Helvetica",sans-serif;text-align: center;'><u><span style='font-family:"Helvetica Neue",sans-serif;'>POUR LES APPRENANTS DU FRAN&Ccedil;AIS</span></u></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Activit&eacute; 1. La compr&eacute;hension des diff&eacute;rents accents.&nbsp;</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Objectif. Se familiariser avec diff&eacute;rents accents francophones.&nbsp;</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&Eacute;coutez quelques audios de l&rsquo;atlas sonore. Quels sont les mots nouveaux que vous avez entendus? Est-ce que certains accents sont plus faciles &agrave; comprendre que d&rsquo;autres? Si oui, pourquoi? Remarquez-vous des emprunts lexicaux ou l&rsquo;influence d&rsquo;une autre langue (surtout l&rsquo;anglais)?</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Activit&eacute; 2. Votre histoire avec le fran&ccedil;ais.</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Objectif. Entendre diff&eacute;rents accents et r&eacute;fl&eacute;chir sur le r&ocirc;le du fran&ccedil;ais dans sa vie.</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&Eacute;coutez les histoires racont&eacute;es par les francophones du Canada. Chaque personne a une histoire diff&eacute;rente et le fran&ccedil;ais a une importance ou joue un r&ocirc;le diff&eacute;rent pour chacune d&rsquo;entre elles. Quelle est ton histoire? Ici, nous vous invitons &agrave; verbaliser les raisons pour lesquelles vous apprenez le fran&ccedil;ais et la place qu&rsquo;occupe le fran&ccedil;ais dans la formation de votre identit&eacute;. (Oui oui, le fran&ccedil;ais peut aussi faire partie de l&rsquo;identit&eacute; des apprenants du fran&ccedil;ais!) Pourquoi le fran&ccedil;ais est-il important pour vous?</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Activit&eacute; 3.&nbsp;</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Objectif. Reconna&icirc;tre vos sentiments envers votre propre vari&eacute;t&eacute; de fran&ccedil;ais.</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>Sur ce site web, vous pouvez entendre diff&eacute;rents accents francophones. Comment vous sentez-vous par rapport &agrave; votre propre accent? &Ecirc;tes-vous plus ou moins &agrave; l&rsquo;aise avec votre niveau de fran&ccedil;ais? Quels &eacute;l&eacute;ments vous permettent de vous sentir confiant&middot;e et fier&middot;&egrave;re de votre fran&ccedil;ais?</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+
+        <p id="five" style='margin:0cm;font-size:16px;font-family:"Helvetica",sans-serif;text-align: center;'><u><span style='font-family:"Helvetica Neue",sans-serif;'>POUR TOUT LE MONDE</span></u></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-size:13px;font-family:"Helvetica Neue",sans-serif;'><span style="text-decoration:none;">&nbsp;</span></span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>Bien s&ucirc;r, les id&eacute;es pour les groupes scolaires sont appropri&eacute;es pour tout le monde. Mais voici quand m&ecirc;me quelques id&eacute;es suppl&eacute;mentaires.&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Activit&eacute; 1. Une langue fran&ccedil;aise en constant changement.</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Objectif : Reconnaitre que la langue fran&ccedil;aise, comme toute autre langue, n&rsquo;est pas fig&eacute;e.&nbsp;</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>L&rsquo;Organisation internationale de la francophonie a &eacute;crit ceci sur sa page web&nbsp;:</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;&laquo;Le fran&ccedil;ais se renouvelle, se r&eacute;invente, se transforme et n&apos;h&eacute;site plus &agrave; transgresser les r&egrave;gles, devenant ainsi une langue multiple et changeante qui s&apos;adapte au monde moderne et aux r&eacute;alit&eacute;s culturelles.&raquo; Par nature, la langue est en constant changement. Quels changements linguistiques observez-vous autour de vous? &nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Activit&eacute; 2. Autor&eacute;flexion</span></strong></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><strong><span style='font-family:"Helvetica Neue",sans-serif;'>Objectif&nbsp;: Amener les personnes &agrave; r&eacute;fl&eacute;chir sur leur comportement face &agrave; la variation linguistique</span></strong><span style='font-family:"Helvetica Neue",sans-serif;'>.</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>Nous parlons souvent de <em>la&nbsp;</em>langue fran&ccedil;aise au singulier, mais il serait peut-&ecirc;tre plus juste de parler <em>des&nbsp;</em>langues fran&ccedil;aises au pluriel. &Ecirc;tes-vous conscient&middot;e des r&eacute;actions et des comportements que vous avez lorsque vous entendez un accent diff&eacute;rent du v&ocirc;tre? Ou diff&eacute;rents de ce que vous &ecirc;tes habitu&eacute;&middot;e d&rsquo;entendre? Comment pouvons-nous faire pour amener les francophones &agrave; valoriser chaque accent?</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+        <p style='margin:0cm;font-size:13px;font-family:"Helvetica",sans-serif;'><span style='font-family:"Helvetica Neue",sans-serif;'>&nbsp;</span></p>
+      </div>
+
+      <div class="leaflet-sidebar-pane" id="participate">
+        <h1 class="leaflet-sidebar-header">
+          PARTICIPEZ!<span class="leaflet-sidebar-close"
+        ><i class="fa fa-caret-left"></i
+        ></span>
+        </h1>
+        <p>Votre accent nous intéresse!</p>
+
+        <p>Nous vous invitons à participer à notre collecte de données en nous envoyant des enregistrements vocaux. Ces enregistrements seront placés sur la carte du Canada.</p>
+
+        <p>Votre participation à cette étude est divisée en trois parties. Tout d’abord, vous répondrez à quelques questions vous concernant (âge, lieu d’origine et langues parlées, par exemple). Vous devrez ensuite lire un court passage en français (pas plus de deux minutes!). Puis vous terminerez en enregistrant un court message d’environ une ou deux minutes où vous nous dites ce que représente la langue française pour vous, dans votre quotidien.</p>
+
+        <p>Voici le lien pour participer à cette étude: <a href="participez/" target="_blank">https://atlas-sonore.fhis.ubc.ca/participez</a></p>
+
+        <p>N’hésitez pas à nous écrire si vous avez des questions. Vous pouvez nous contacter à l’adresse courriel suivante : me.bouchard@ubc.ca</p>
+
+        <p>Votre participation est importante à la réalisation de ce projet. Merci!</p>
+
+      </div>
+
+<!--      <div class="leaflet-sidebar-pane" id="settings">-->
+<!--        <h1 class="leaflet-sidebar-header">-->
+<!--          Settings<span class="leaflet-sidebar-close"-->
+<!--        ><i class="fa fa-caret-right"></i-->
+<!--        ></span>-->
+<!--        </h1>-->
+<!--      </div>-->
+    </div>
+  </div>
+  <div id="map"></div>
+  <table id="maptable" class="display"></table>
+  <script src="./scripts/leaflet-sidebar.js"></script>
+  <script type="text/javascript">
+    var map = L.map('map', {
+      attributionControl: false,
+      zoomControl: false,
+      scrollWheelZoom: true,
+      tap: false
+    }).setView([41.76,-72.69], 11); // default center is overridden by Google Sheet options and points
+    var sidebar = L.control
+            .sidebar({ closeButton: true, container: "sidebar", position: "left", autopan: false })
+            .addTo(map)
+            .open("info");
+            // .open("home");
+    // var sidebar = L.control
+    //         .sidebar({ closeButton: true, container: "sidebar", position: "right", autopan: false })
+    //         .addTo(map)
+    //         .open("home");
+  </script>
+
+  <script type="text/javascript" src="./google-doc-url.js"></script>
+  <script type="text/javascript" src="./scripts/constants.js"></script>
+  <script type="text/javascript" src="./scripts/palette.js"></script>
+  <script type="text/javascript" src="./scripts/polylabel.js"></script>
+  <script type="text/javascript" src="./scripts/map.js"></script>
+
+</body>
+</html>
